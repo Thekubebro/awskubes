@@ -82,3 +82,30 @@ To release the resources, please run:
 
 kn destroy
 Warning: if you delete the cluster configuration directory (my_deployment) the cluster status will be lost, and you’ll have to delete the resources manually.
+
+# Edge Nodes
+Edge nodes are specialized service nodes with an associated public IP address, and they run Traefik acting as reverse proxies, and load balancers, for the services that are exposed to the Internet. In the default settings, we don’t deploy any edge node enabling the reverse proxy logic in the master node instead. However, in production settings we recommend to deploy one or more edge nodes to reduce the load in the master.
+
+# GlusterFS Nodes
+GlusterFS nodes are specialized service nodes. They run only GlusterFS and they are attached to a block storage volume to provide additional capacity. In the default settings, we don’t deploy GlusterFS nodes, as it is not required in many use cases. However, GlusterFS can be particularly convenient when a distributed file system is needed for container synchronization.
+
+# Single-Node Deployments
+When resources are scarce, or for testing purpose, KubeNow enables single-node deployments. In fact, it is possible to deploy the master node only, which will automatically enabled for service scheduling.
+
+# Cloudflare DNS Records
+Cloudflare runs one of the largest authoritative DNS networks in the world. In order to resolve domain names for exposed services, KubeNow can optionally configure the Cloudflare dynamic DNS service, so that a base domain name will resolve to the edge nodes (or the master node if no edge node is deployed).
+
+# Cloudflare: Proxied Traffic
+Incoming container traffic can be optionally proxied through the Cloudflare servers. When operating in this mode Cloudflare provides HTTPS for container services, and it protects against distributed denial of service, customer data breach and malicious bot abuse.
+
+# Image building
+KubeNow uses prebuilt images to speed up the deployment. Image continous integration is defined in this repository: https://github.com/kubenow/image.
+
+The images are exported on AWS, GCE and Azure:
+
+https://storage.googleapis.com/kubenow-images/kubenow-<version-without-dots>.tar.gz
+https://s3.amazonaws.com/kubenow-us-east-1/kubenow-<version-without-dots>.qcow2
+https://kubenow.blob.core.windows.net/system?restype=container&comp=list
+Please refer to this page to figure out the image version: https://github.com/kubenow/image/releases. It is important to point out that the image versioning is now disjoint from the main KubeNow repository versioning. The main reason lies in the fact that pre-built images require less revisions and updates compared to the main KubeNow package.
+
+
